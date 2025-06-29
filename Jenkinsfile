@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    SONARQUBE_SERVER = 'SonarQube'  // Le nom de ta configuration SonarQube dans Jenkins
+    SONARQUBE_SERVER = 'sonarqube'  // Le nom de ta configuration SonarQube dans Jenkins
   }
 
   stages {
@@ -25,18 +25,15 @@ pipeline {
     }
 
     stage('SonarQube analysis') {
-      steps {
-        withSonarQubeEnv(SONARQUBE_SERVER) {
-          sh '''
-            npx sonar-scanner \
-              -Dsonar.projectKey=OumaimaFront \
-              -Dsonar.projectName=OumaimaFront \
-              -Dsonar.sources=src \
-              -Dsonar.host.url=$SONAR_HOST_URL \
-              -Dsonar.login=$SONAR_AUTH_TOKEN \
-              -Dsonar.language=js \
-              -Dsonar.sourceEncoding=UTF-8
-          '''
+    steps {
+      withSonarQubeEnv(SONARQUBE_SERVER) {
+        sh '''
+          npx sonar-scanner \
+            -Dsonar.projectKey=OumaimaFront \
+            -Dsonar.sources=src \
+            -Dsonar.host.url=$SONAR_HOST_URL \
+            -Dsonar.login=$SONAR_AUTH_TOKEN
+        '''
         }
       }
     }
